@@ -22,23 +22,22 @@ app.post("/repositories", (request, response) => {
     techs,
     likes: 0
   };
+  repositories.push(repository);
 
   return response.json(repository);
 });
 
 app.put("/repositories/:id", (request, response) => {
   const { id } = request.params;
-  const updatedRepository = request.body;
+  const updateParams = request.body;
 
-  repositoryIndex = repositories.findindex(repository => repository.id === id);
+  let repository = repositories.find(repository => repository.id === id);
 
-  if (repositoryIndex < 0) {
+  if (!repository) {
     return response.status(404).json({ error: "Repository not found" });
   }
 
-  const repository = { ...repositories[repositoryIndex], ...updatedRepository };
-
-  repositories[repositoryIndex] = repository;
+  repository = { ...repository, ...updateParams };
 
   return response.json(repository);
 });
